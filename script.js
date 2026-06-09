@@ -8,8 +8,18 @@ let cordinates = [];
 ctx.fillStyle = "blue";
 let l = 80;
 let gap = 2;
+
+let drawRect = (item) => ctx.fillRect(item.x1, item.y1, item.x2, item.y2);;
+
+
 //draw board
+iterateMatrix(cordinates, drawRect);
+
+
+
+
 for (let i = 0; i < 4; i++) {
+  let row = [];
   for (let j = 0; j < 4; j++) {
     //horizonatal gap
     let hgap = j * gap;
@@ -20,17 +30,21 @@ for (let i = 0; i < 4; i++) {
     let y1 = l * i + vgap;
     let x2 = l;
     let y2 = l;
-    cordinates.push({
+    row.push({
       x1: x1,
       y1: y1,
       x2: x2,
       y2: y2,
     });
+    cordinates.push(row);
   }
 }
+//console.log(cordinates[0][0]);
+
 const canvasStart = canvas.getBoundingClientRect();
 const canvasStartX = canvasStart.left;
 const canvasStartY = canvasStart.top;
+
 cordinates.forEach((item) => {
   ctx.fillRect(item.x1, item.y1, item.x2, item.y2);
 });
@@ -57,7 +71,7 @@ cordinates.forEach((item) => {
   });
 });
 */
-console.log(cordinates);
+//console.log(cordinates);
 
 window.addEventListener("click", (e) => {
   let x = e.clientX;
@@ -92,6 +106,19 @@ window.addEventListener("click", (e) => {
 
   //console.log(e.clientX, e.clientY);
 });
+
+function iterateMatrix(arr, func) {
+  let rowlen = arr.length;
+  let collen = arr[0].length;
+  
+  for (let i = 0; i < rowlen; i++) {
+    for (let j = 0; j < collen; j++) {
+      func(arr[i][j]);
+      
+    }
+    
+  }
+}
 
 function boudaryCheck(b1, b2, value) {
   if (value >= b1 && value <= b2) return true;
@@ -129,7 +156,7 @@ function showpath(c, arr) {
       lineY.forEach((itemY) => {
         if (itemX.x1 == itemY.y1 && itemX.y1 == itemY.x1) {
           drawCircle(item.x1 + item.x2 / 2, item.y1 + item.y2 / 2, 5);
-          console.log(true);
+          //console.log(true);
         }
       });
     });
