@@ -1,3 +1,5 @@
+import { Queen } from "./queen.js";
+
 const canvas = document.getElementById("canvas1");
 const ctx = canvas.getContext("2d");
 
@@ -5,21 +7,33 @@ canvas.width = 400;
 canvas.height = 400;
 
 let cordinates = [];
+let queens = [];
 ctx.fillStyle = "blue";
 let l = 80;
 let gap = 2;
+let boardX = 30;
+let boardY = 30;
+let matrixSize = 4;
 
-//Create cordinates
-for (let i = 0; i < 4; i++) {
+//Create cordinates as bellow
+/* 
+_____________
+| 00  |  01 |
+|_____|_____|
+| 10  | 11  |
+|_____|_____| 
+*/
+
+for (let i = 0; i < matrixSize; i++) {
   let row = [];
-  for (let j = 0; j < 4; j++) {
+  for (let j = 0; j < matrixSize; j++) {
     //horizonatal gap
     let hgap = j * gap;
     //vertical gap
     let vgap = i * gap;
 
-    let x1 = l * j + hgap;
-    let y1 = l * i + vgap;
+    let x1 = l * j + hgap + boardX;
+    let y1 = l * i + vgap + boardY;
     let x2 = l;
     let y2 = l;
     row.push({
@@ -65,65 +79,6 @@ function drawCircle(x, y, r) {
 
 //console.log(cordinates);
 
-//c stqand for codinate
-function showpath(c, arr, i, j) {
-  let shouldCheckX = c.x1;
-  let shouldCheckY = c.y1;
-  ctx.fillStyle = "red";
-
-  arr.forEach((row) => {
-    row.forEach((item) => {
-      if (item.x1 == shouldCheckX) {
-        drawCircle(item.x1 + item.x2 / 2, item.y1 + item.y2 / 2, 5);
-      }
-      if (item.y1 == shouldCheckY) {
-        drawCircle(item.x1 + item.x2 / 2, item.y1 + item.y2 / 2, 5);
-      }
-    });
-  });
-
-  //make diagonal
-  let d = [];
-  let k = i;
-  let l = j;
-
-  while (k - 1 >= 0 && l - 1 >= 0) {
-    k--;
-    l--;
-    d.push([k, l]);
-  }
-  k = i;
-  l = j;
-
-  while (k + 1 < 4 && l + 1 < 4) {
-    k++;
-    l++;
-    d.push([k, l]);
-  }
-
-  k = i;
-  l = j;
-
-  while (k - 1 >= 0 && l + 1 < 4) {
-    k--;
-    l++;
-    d.push([k, l]);
-  }
-
-  while (l - 1 >= 0 && k + 1 < 4) {
-    k++;
-    l--;
-    d.push([k, l]);
-  }
-
-  //console.log(arr[0]);
-
-  d.forEach((index) => {
-    item = arr[index[0]][index[1]];
-    drawCircle(item.x1 + item.x2 / 2, item.y1 + item.y2 / 2, 5);
-  });
-}
-
 window.addEventListener("click", (e) => {
   let x = e.clientX;
   let y = e.clientY;
@@ -146,15 +101,15 @@ window.addEventListener("click", (e) => {
       row.forEach((item, j) => {
         let checkX = boudaryCheck(item.x1, item.x1 + item.x2, useableX);
         let checkY = boudaryCheck(item.y1, item.y1 + item.y2, useableY);
-        //console.log(checkX, checkY);
 
         if (checkX && checkY) {
-          showpath(item, cordinates, i, j);
-          drawCircle(item.x1 + item.x2 / 2, item.y1 + item.y2 / 2, 15);
+          queens.push(new Queen(i, j, 15, cordinates));
         }
       });
     });
   }
-
-  //console.log(e.clientX, e.clientY);
+  queens.forEach((queen) => {
+    queen.drawQueenPath(ctx, "green");
+    queen.drawQueen(ctx, "black");
+  });
 });
