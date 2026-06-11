@@ -1,9 +1,25 @@
 body {
   background-color: black;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+form {
+  margin-bottom: 30px;
+}
+label {
+  color: wheat;
+}
+
+input {
+  border: none;
+  border-radius: 30px;
+  padding: 5px 10px;
+  margin-left: 10px;
 }
 
 #canvas1 {

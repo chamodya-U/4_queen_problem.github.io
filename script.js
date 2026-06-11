@@ -2,6 +2,9 @@ import { Queen } from "./queen.js";
 
 const canvas = document.getElementById("canvas1");
 const ctx = canvas.getContext("2d");
+const submitBtn = document.getElementById("submit-btn");
+
+console.log(submitBtn);
 
 canvas.width = 400;
 canvas.height = 400;
@@ -9,11 +12,27 @@ canvas.height = 400;
 let cordinates = [];
 let queens = [];
 ctx.fillStyle = "blue";
-let l = 80;
+
 let gap = 2;
-let boardX = 30;
-let boardY = 30;
-let matrixSize = 4;
+let boardX = 0;
+let boardY = 0;
+let matrixSize = 8;
+
+submitBtn.addEventListener("click", () => {
+  let value = document.getElementById("size").value;
+  console.log(value);
+
+  if (value <= 0) {
+    alert("Matrix size should be positive");
+    return;
+  }
+  if (!Number.isInteger(Number(value))) {
+    alert("Matrix size should be integer");
+  }
+  matrixSize = Number(value);
+});
+
+let l = (canvas.width - gap * matrixSize) / matrixSize;
 
 //Create cordinates as bellow
 /* 
